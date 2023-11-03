@@ -1,0 +1,12 @@
+#MariaDB 
+$DB_NAME = WordPressDB
+$DB_ROOT_PWD = Inception
+
+#WordPress DataBase users
+$DB_USER1 = user1
+$DB_PWD1 = Inception
+$DB_USER2 = user2
+$DB_PWD2 = Inception
+
+#WORDPRESS URL
+$WP_URL = tklouwer.42.fr

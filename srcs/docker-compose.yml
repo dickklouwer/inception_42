@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+    mariadb:
+        image: mariadb
+        build: ./requirements/mariadb
+        restart: always
+        volumes:
+            - db:/var/lib/mysql # Data will be written to the host disk
+        env_file:
+            - ./.env
+        networks:
+            - tklouwer-inception
+
+    nginx:
+        image: nginx
+        container_name: nginx
+        build: ./requirements/nginx
+        restart: always
+        depends_on:
+            - wordpress
+        volumes:
+            - wp:/var/www/wordpress
+        ports:
+            - "443:443"
+        networks:
+            - tklouwer-inception
+
+    wordpress:
+        image: wordpress
+        build: ./requirements/wordpress
+        container_name: wordpress
+        depends_on:
+            - mariadb
+        restart: always
+        volumes:
+            - wp:/var/www/wordpress
+        env_file:
+            - ./.env
+        networks:
+            - tklouwer-inception
+
+volumes:
+    db:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/tklouwer/data/mariadb
+
+    wp:
+        driver: local
+        driver_opts:
+            type: none
+            o: bind
+            device: /home/tklouwer/data/wordpress
+   
+networks:
+    tklouwer-inception:
